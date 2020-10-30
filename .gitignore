@@ -10,6 +10,8 @@
 !.vscode/extensions.json
 *.code-workspace
 
+src/profile.json
+
 ### Linux ###
 *~
 

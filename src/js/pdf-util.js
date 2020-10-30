@@ -14,11 +14,11 @@ const ys = {
 }
 
 export async function generatePdf (profile, reasons, pdfBase) {
-  const creationInstant = new Date()
-  const creationDate = creationInstant.toLocaleDateString('fr-FR')
+  const creationInstant = new Date();
+  const creationDate = creationInstant.toLocaleDateString('fr-FR');
   const creationHour = creationInstant
     .toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
-    .replace(':', 'h')
+    .replace(':', 'h');
 
   const {
     lastname,
@@ -30,7 +30,7 @@ export async function generatePdf (profile, reasons, pdfBase) {
     city,
     datesortie,
     heuresortie,
-  } = profile
+  } = profile;
 
   const data = [
     `Cree le: ${creationDate} a ${creationHour}`,
@@ -40,11 +40,11 @@ export async function generatePdf (profile, reasons, pdfBase) {
     `Adresse: ${address} ${zipcode} ${city}`,
     `Sortie: ${datesortie} a ${heuresortie}`,
     `Motifs: ${reasons}`,
-  ].join(';\n ')
+  ].join(';\n ');
 
-  const existingPdfBytes = await fetch(pdfBase).then((res) => res.arrayBuffer())
+  const existingPdfBytes = await fetch(pdfBase).then((res) => res.arrayBuffer());
 
-  const pdfDoc = await PDFDocument.load(existingPdfBytes)
+  const pdfDoc = await PDFDocument.load(existingPdfBytes);
 
   // set pdf metadata
   pdfDoc.setTitle('COVID-19 - Déclaration de déplacement')
@@ -75,7 +75,6 @@ export async function generatePdf (profile, reasons, pdfBase) {
   drawText(`${address} ${zipcode} ${city}`, 133, 652)
 
   reasons
-    .split(', ')
     .forEach(reason => {
       drawText('x', 78, ys[reason], 18)
     })
@@ -114,14 +113,14 @@ export async function generatePdf (profile, reasons, pdfBase) {
     height: 92,
   })
 
-  pdfDoc.addPage()
-  const page2 = pdfDoc.getPages()[1]
-  page2.drawImage(qrImage, {
-    x: 50,
-    y: page2.getHeight() - 350,
-    width: 300,
-    height: 300,
-  })
+  // pdfDoc.addPage()
+  // const page2 = pdfDoc.getPages()[1]
+  // page2.drawImage(qrImage, {
+  //   x: 50,
+  //   y: page2.getHeight() - 350,
+  //   width: 300,
+  //   height: 300,
+  // })
 
   const pdfBytes = await pdfDoc.save()
 
