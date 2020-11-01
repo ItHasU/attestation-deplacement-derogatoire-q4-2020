@@ -1,28 +1,37 @@
-import { $, $$, downloadBlob } from './dom-utils'
-import { addSlash, getFormattedDate } from './util'
+import { $, createElement, downloadBlob } from './dom-utils'
 import pdfBase from '../certificate.pdf'
 import { generatePdf } from './pdf-util'
-import custom_profile from "../profile.json"
+import custom_profiles from "../profile.json"
 
 export function getProfile() {
-  let now = new Date();
-  let datesortie = now.toLocaleDateString('fr-FR').replace("-", "/");
-  let heuresortie = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  const profileIndex = +$("#field-profile").value;
 
-  const fields = custom_profile;
+  const now = new Date();
+  const datesortie = now.toLocaleDateString('fr-FR').replace("-", "/");
+  const heuresortie = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+  const fields = custom_profiles[profileIndex];
   fields.datesortie = datesortie;
   fields.heuresortie = heuresortie;
 
-  return fields
+  return fields;
 }
 
 export function prepareForm() {
-  const reason = $('#field-reason');
+  const profileSelect = $('#field-profile');
+  const reasonSelect = $('#field-reason');
   const snackbar = $('#snackbar');
+
+  profileSelect.innerHTML = "";
+  for (let i = 0; i < custom_profiles.length; i++) {
+    let option = createElement("option", { value: i });
+    $("#field-profile").appendChild(option);
+    option.innerHTML = `${custom_profiles[i].firstname} ${custom_profiles[i].lastname}`;
+  }
 
   $('#generate-btn').addEventListener('click', async () => {
     try {
-      let reasonValue = reason.value;
+      let reasonValue = reasonSelect.value;
 
       const pdfBlob = await generatePdf(getProfile(), [reasonValue], pdfBase)
 
