@@ -118,11 +118,6 @@ canvas {
   border-radius: .25rem;
 }
 
-a {
-  color: #000191;
-  text-decoration: underline;
-}
-
 @media (prefers-color-scheme: dark) {
   a {
     color: #A3A3FF;

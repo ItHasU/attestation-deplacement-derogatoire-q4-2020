@@ -9,20 +9,22 @@ const plainAttributes = [
   'min',
   'max',
   'pattern',
+  'class',
+  'data-reason'
 ]
 
 export const createElement = (tag, attrs) => {
-  const el = document.createElement(tag)
+  const el = document.createElement(tag);
   plainAttributes.forEach(plainAttr => {
     if (attrs && plainAttr in attrs && attrs[plainAttr]) {
-      el.setAttribute(plainAttr, attrs[plainAttr])
+      el.setAttribute(plainAttr, attrs[plainAttr]);
     }
     if (attrs) {
-      delete attrs[plainAttr]
+      delete attrs[plainAttr];
     }
   })
-  Object.assign(el, attrs)
-  return el
+  Object.assign(el, attrs);
+  return el;
 }
 
 export const appendTo = el => domNodes => {

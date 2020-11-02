@@ -1,7 +1,19 @@
-import { $, createElement, downloadBlob } from './dom-utils'
+import { $, $$, createElement, downloadBlob } from './dom-utils'
 import pdfBase from '../certificate.pdf'
 import { generatePdf } from './pdf-util'
 import custom_profiles from "../profile.json"
+
+const reasonLabels = {
+  "enfants": "Ecole",
+  "travail": "Travail",
+  "achats": "Courses",
+  "sante": "Médecin",
+  "famille": "Raison familiale",
+  "sport_animaux": "Sport",
+  "convocation": "Convocation",
+  "missions": "Mission d'intéret général"
+};
+var reasonValues = ["enfants", "travail"];
 
 export function getProfile() {
   const profileIndex = +$("#field-profile").value;
@@ -19,7 +31,6 @@ export function getProfile() {
 
 export function prepareForm() {
   const profileSelect = $('#field-profile');
-  const reasonSelect = $('#field-reason');
   const snackbar = $('#snackbar');
 
   profileSelect.innerHTML = "";
@@ -29,11 +40,27 @@ export function prepareForm() {
     option.innerHTML = `${custom_profiles[i].firstname} ${custom_profiles[i].lastname}`;
   }
 
+  let isFirst = true;
+  for (let r in reasonLabels) {
+    let nav = createElement("a", {
+      "href": "javascript: void(0)",
+      "data-reason": r,
+      "class": `flex-sm-fill border border-light mb-2 nav-link ${isFirst ? "" : "ml-2"} ${reasonValues.includes(r) ? "active" : ""}`
+    });
+    nav.innerHTML = `<i class="icon-${r}"></i>&nbsp;${reasonLabels[r]}`;
+    $("#field-reason").appendChild(nav);
+
+    nav.addEventListener("click", () => {
+      nav.classList.toggle(`active`);
+    });
+  }
+
   $('#generate-btn').addEventListener('click', async () => {
     try {
-      let reasonValue = reasonSelect.value;
+      debugger;
+      let reasonValues = $$("#field-reason .active").map(e => e.getAttribute("data-reason"));
 
-      const pdfBlob = await generatePdf(getProfile(), [reasonValue], pdfBase)
+      const pdfBlob = await generatePdf(getProfile(), reasonValues, pdfBase)
 
       const creationInstant = new Date();
       const creationDate = creationInstant.toLocaleDateString('fr-FR');

@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'icomoon';
+  src: url('../fonts/icomoon.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-enfants:before {
+  content: "\e901";
+}
+.icon-sport_animaux:before {
+  content: "\e900";
+}
+.icon-travail:before {
+  content: "\e903";
+}
+.icon-achats:before {
+  content: "\e93a";
+}
+.icon-famille:before {
+  content: "\e972";
+}
+.icon-sante:before {
+  content: "\e998";
+}
+.icon-convocation:before {
+  content: "\e9a8";
+}
+.icon-missions:before {
+  content: "\e9da";
+}
